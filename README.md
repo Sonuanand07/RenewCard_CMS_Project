@@ -170,6 +170,32 @@ RenewCred CMS is a decoupled, headless Content Management System that separates 
 
 ## Installation & Setup
 
+### Local Run (Verified Steps)
+```bash
+cd backend
+npm install
+copy .env.example .env
+npm run dev
+```
+
+In a second terminal:
+```bash
+cd admin-frontend
+npm install
+copy .env.example .env
+node .\node_modules\next\dist\bin\next dev -p 3000
+```
+
+In a third terminal:
+```bash
+cd public-frontend
+npm install
+copy .env.example .env
+node .\node_modules\next\dist\bin\next dev -p 3001
+```
+
+> Note: Local execution requires a MongoDB instance. For submission and demo purposes, deploy the backend with MongoDB Atlas and update the backend environment variable `MONGODB_URI`.
+
 ### Option 1: Local Development (Without Docker)
 
 #### Prerequisites
@@ -710,6 +736,31 @@ The dashboard displays:
 - Meta descriptions in page content
 
 ## Docker Deployment
+
+### Local Docker Compose
+```bash
+docker-compose up --build
+```
+
+### Cloud Deployment Recommendation
+- Backend: Render / Railway / Fly.io
+- Admin Frontend: Vercel
+- Public Frontend: Vercel
+- Database: MongoDB Atlas
+
+Set these environment variables in your hosted backend:
+```env
+PORT=10000
+NODE_ENV=production
+MONGODB_URI=mongodb+srv://<user>:<password>@<cluster>/<db>
+JWT_SECRET=<strong-secret>
+CORS_ORIGIN=https://<admin-app>.vercel.app,https://<public-app>.vercel.app
+```
+
+Set these environment variables in the frontend deployments:
+```env
+NEXT_PUBLIC_API_URL=https://<your-backend-url>
+```
 
 ### Building Images
 ```bash
